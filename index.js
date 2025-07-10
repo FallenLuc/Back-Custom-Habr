@@ -5,24 +5,12 @@ const https = require("https")
 const http = require("http")
 const uid = require("uid")
 
-const options = {
-	key: fs.readFileSync(path.resolve(__dirname, "key.pem")),
-	cert: fs.readFileSync(path.resolve(__dirname, "cert.pem"))
-}
-
 const server = jsonServer.create()
 
 const router = jsonServer.router(path.resolve(__dirname, "db.json"))
 
 server.use(jsonServer.defaults({}))
 server.use(jsonServer.bodyParser)
-
-server.use(async (req, res, next) => {
-	await new Promise(res => {
-		setTimeout(res, 800)
-	})
-	next()
-})
 
 server.post("/login", (req, res) => {
 	try {
@@ -107,16 +95,10 @@ server.use((req, res, next) => {
 })
 
 const HTTP_PORT = 8000
-const HTTPS_PORT = 8443
 
-const httpsServer = https.createServer(options, server)
 const httpServer = http.createServer(server)
 
 server.use(router)
-
-httpsServer.listen(HTTPS_PORT, () => {
-	console.log(`server is running on ${HTTPS_PORT} port`)
-})
 
 httpServer.listen(HTTP_PORT, () => {
 	console.log(`server is running on ${HTTP_PORT} port`)
