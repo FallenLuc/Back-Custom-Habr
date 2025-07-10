@@ -12,5 +12,8 @@
   "private": true,
   "devDependencies": {
     "json-server": "0.17.0"
+  },
+  "dependencies": {
+    "uid": "^2.0.2"
   }
 }
